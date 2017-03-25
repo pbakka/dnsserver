@@ -1,0 +1,40 @@
+$TTL 86400
+@       IN SOA  {{host_name}}. root.{{domain_name}}. (
+2014090402      ; serial
+3600      ; refresh
+1800      ; retry
+604800      ; expire
+86400 )    ; minimum
+; Name server's
+{% for hosta in groups['master'] %}
+@       IN      NS      {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+{% for hosta in groups['slave'] %}
+@       IN      NS      {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+
+@       IN      PTR     {{domain_name}}.
+; Name server hostname to IP resolve.
+{% for hosta in groups['master'] %}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+{% for hosta in groups['slave'] %}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+
+;Hosts in Domain 
+;node1           IN      A       192.168.0.210
+;rhel            IN      A       192.168.0.220
+
+{% for hosta in groups['master'] %}
+{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+
+{% for hosta in groups['slave'] %}
+{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+
+;210             IN      PTR     node1.tecmintlocal.com.
+;220             IN      PTR     rhel1.tecmintlocal.com.

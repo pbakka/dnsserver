@@ -1,0 +1,40 @@
+  
+- name: deploy the /etc/named.conf
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+    mode: 0640
+    backup: yes
+    group: named
+  register: master_named
+
+- name: create master zone files - fwd
+  template:
+    src: fwd.zone.j2
+    dest: /var/named/{{domain_name}}.fwd.zone
+    mode: 0640
+    backup: yes
+    group: named
+  register: master_fwd
+      
+- name: create master zone files - rev
+  template:
+    src: rev.zone.j2
+    dest: /var/named/{{domain_name}}.rev.zone
+    mode: 0640
+    backup: yes
+    group: named
+  register: master_rev
+  
+- name:  enable primary named service
+  service:
+    name: named
+    state: started
+    enabled: yes
+    
+- name: reload primary if configs changed
+  service:
+    name: named
+    state: reloaded
+  when: master_named.changed or master_rev.changed or master_fwd.changed
+

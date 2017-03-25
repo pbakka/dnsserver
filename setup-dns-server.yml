@@ -1,0 +1,15 @@
+---
+# all facts for all hosts are gathered; and the common packages
+# and configurations are performed on each host.
+- name: install DNS server master
+  hosts: all
+  roles:
+    - common
+- name: install primary
+  hosts: master
+  roles:
+    - primary
+- name: install secondary
+  hosts: slave
+  roles:
+    - secondary

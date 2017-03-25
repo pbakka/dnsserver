@@ -1,0 +1,12 @@
+---
+- name: register /etc/named.conf
+  stat:
+    path: /etc/named.conf
+  register: named_conf
+#
+#- debug:
+#    var: named_conf
+    
+    
+- include: configure_secondary.yml
+  when: named_conf.stat.exists == true

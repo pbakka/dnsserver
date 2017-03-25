@@ -1,0 +1,36 @@
+$TTL 86400
+
+{{domain_name}}       IN SOA   {{hostvars[groups['master'][0]]['host_name']}}.     root.{{domain_name}}. (
+2014090401    ; serial
+3600    ; refresh
+1800    ; retry
+604800    ; expire
+86400 )  ; minimum
+; Name server's
+{% for hosta in groups['master'] %}
+      NS   {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+{% for hosta in groups['slave'] %}
+      NS   {{hostvars[hosta]['host_name']}}.
+{% endfor %}
+
+; Name server hostname to IP resolve.
+     A       {{hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']}}
+
+{% for hosta in groups['master'] %}
+     A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+
+$ORIGIN {{domain_name}}.
+
+; Hosts in this Domain
+;@       IN      A       192.168.0.210
+;@       IN      A       192.168.0.220
+
+{% for hosta in groups['master'] %}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+
+{% for hosta in groups['slave'] %}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}

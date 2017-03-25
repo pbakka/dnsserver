@@ -1,0 +1,6 @@
+---
+- name: set up hostname {{ host_name }}
+  hostname:
+    name: "{{host_name}}"
+    
+- include: installs.yml

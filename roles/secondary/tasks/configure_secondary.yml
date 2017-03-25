@@ -1,0 +1,43 @@
+
+- name: deploy secondary /etc/named.conf
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+    mode: 0640
+    backup: yes
+    group: named
+  register: secondary_named
+    
+- name: create secondary zone files - fwd
+  template:
+    src: fwd.zone.j2
+    dest: /var/named/slaves/{{domain_name}}.fwd.zone
+    mode: 0640
+    backup: yes
+    group: named
+  register: secondary_fwd
+
+    
+- name: create secondary zone files - rev
+  template:
+    src: rev.zone.j2
+    dest: /var/named/slaves/{{domain_name}}.rev.zone
+    mode: 0640
+    backup: yes
+    group: named
+  register: secondary_rev
+
+- name:  enable secondary named service
+  service:
+    name: named
+    state: started
+    enabled: yes
+    use: ansible_service_mg
+  register: enable_secondary
+
+- name: reload secondary if configs changed
+  service:
+    name: named
+    state: reloaded
+    use: ansible_service_mg
+  when: secondary_named.changed or secondary_rev.changed or secondary_fwd.changed
