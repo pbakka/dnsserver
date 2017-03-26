@@ -19,4 +19,8 @@ domain_name=tipsoft.local
 gateway_address=192.168.2.1
 allowed_ips=192.168.2.0/24
 forwarders="8.8.8.8"
+
+To Run:
+
+ansible-playbook -i inventory setup-dns-server.yml
  
