@@ -10,3 +10,4 @@
     - bind-libs
     - bind-utils
     - rpcbind
+  when: add_client is undefined
