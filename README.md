@@ -5,6 +5,8 @@ Create local DN Server Primary and secondary with a forwarder.
 
 Select two different machines one as primary and other as slave.
 
+Add Client host ip address and name under the clients section of the inventory file
+
 **Fill in the inventory file with IP address** 
 
 ## [master]
