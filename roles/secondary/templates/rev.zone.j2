@@ -4,7 +4,7 @@ $TTL 86400
        set arpId = hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')
 %}
 
-{{arpId[2]}}.{{arpId[3]}}.{{arpId[0]}}.in-addr.arpa        IN SOA  {{host_name}}. root.{{domain_name}}. (
+{{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa        IN SOA  {{host_name}}. root.{{domain_name}}. (
 2014090402      ; serial
 3600      ; refresh
 1800      ; retry
@@ -19,7 +19,7 @@ $TTL 86400
 {% endfor %}
 
       PTR     {{domain_name}}.
-$ORIGIN {{arpId[2]}}.{{arpId[3]}}.{{arpId[0]}}.in-addr.arpa 
+$ORIGIN {{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa 
 ;Hosts in Domain 
 ;node1                 A       192.168.0.210
 ;rhel                  A       192.168.0.220
@@ -31,6 +31,9 @@ $ORIGIN {{arpId[2]}}.{{arpId[3]}}.{{arpId[0]}}.in-addr.arpa
 {{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
 {% endfor %}
 
+{% for hosta in groups['clients'] %}
+{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
 
 {% for hosta in groups['master'] %}
 {% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
@@ -42,5 +45,9 @@ $ORIGIN {{arpId[2]}}.{{arpId[3]}}.{{arpId[0]}}.in-addr.arpa
 {{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 
+{% for hosta in groups['clients'] %}
+{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
+{% endfor %}
 ;210             IN      PTR     node1.tecmintlocal.com.
 ;220             IN      PTR     rhel1.tecmintlocal.com.

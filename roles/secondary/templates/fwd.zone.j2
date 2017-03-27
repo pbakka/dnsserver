@@ -21,6 +21,10 @@ $TTL 86400
      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
 {% endfor %}
 
+{% for hosta in groups['clients'] %}
+     A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+
 $ORIGIN {{domain_name}}.
 
 ; Hosts in this Domain
@@ -32,5 +36,8 @@ $ORIGIN {{domain_name}}.
 {% endfor %}
 
 {% for hosta in groups['slave'] %}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{% endfor %}
+{% for hosta in groups['clients'] %}
 {{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
 {% endfor %}
