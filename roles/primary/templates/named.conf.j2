@@ -54,10 +54,10 @@ zone "{{ domain_name }}" IN {
        set arpId = hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')
 %}
 
-zone "{{arpId[2]}}.{{arpId[3]}}.{{arpId[0]}}.in-addr.arpa" IN {
+zone "{{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa" IN {
        type master;
        file "{{ domain_name }}.rev.zone";
-       allow-update { none; };
+//       allow-update { none; };
 };
 
 
