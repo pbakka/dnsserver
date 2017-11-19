@@ -1,5 +1,5 @@
 options {
-	listen-on port 53 { 127.0.0.1; {{ hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'] }}; }; # Our Slave DNS server IP
+	listen-on port 53 { 127.0.0.1; {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}; }; # Our Slave DNS server IP
 	listen-on-v6 port 53 { ::1; };
 	directory       "/var/named";
 	dump-file       "/var/named/data/cache_dump.db";
@@ -28,18 +28,18 @@ zone "." IN {
 zone "{{domain_name}}" IN {
 	type slave;
 	file "{{domain_name}}.fwd.zone";
-	masters {  {% for hosta in groups['master'] %} {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}; {% endfor %} };
+	masters {  {% for hosta in groups['master'] %} {{hostvars[hosta]['ansible_default_ipv4']['address']}}; {% endfor %} };
 };
 
 {% 
-       set arpId = hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')
+       set arpId = hostvars[inventory_hostname]['ansible_default_ipv4']['address'].split('.')
 %}
 
 
 zone "{{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa" IN {
 	type slave;
 	file "{{domain_name}}.rev.zone";
-	masters { {% for hosta in groups['master'] %} {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}; {% endfor %} };
+	masters { {% for hosta in groups['master'] %} {{hostvars[hosta]['ansible_default_ipv4']['address']}}; {% endfor %} };
 };
 #####
 //include "/etc/named.rfc1912.zones";

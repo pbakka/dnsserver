@@ -1,4 +1,4 @@
-$TTL 86400
+TTL 86400
 
 {{domain_name}}       IN SOA   {{hostvars[groups['master'][0]]['host_name']}}.     root.{{domain_name}}. (
 2014090401    ; serial
@@ -15,14 +15,14 @@ $TTL 86400
 {% endfor %}
 
 ; Name server hostname to IP resolve.
-     A       {{hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']}}
+     A       {{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}
 
 {% for hosta in groups['master'] %}
-     A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+     A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-     A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+     A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 $ORIGIN {{domain_name}}.
@@ -32,12 +32,12 @@ $ORIGIN {{domain_name}}.
 ;@       IN      A       192.168.0.220
 
 {% for hosta in groups['master'] %}
-{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['slave'] %}
-{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 {% for hosta in groups['clients'] %}
-{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}

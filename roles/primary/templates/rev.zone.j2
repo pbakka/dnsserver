@@ -16,13 +16,13 @@ $TTL 86400
 @       IN      PTR     {{domain_name}}.
 ; Name server hostname to IP resolve.
 {% for hosta in groups['master'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 {% for hosta in groups['slave'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 {% for hosta in groups['clients'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 ;Hosts in Domain 
@@ -30,17 +30,17 @@ $TTL 86400
 ;rhel            IN      A       192.168.0.220
 
 {% for hosta in groups['master'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 
 {% for hosta in groups['slave'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 ;210             IN      PTR     node1.tecmintlocal.com.

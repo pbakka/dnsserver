@@ -8,14 +8,14 @@
 //
 
 options {
-        listen-on port 53 { 127.0.0.1; {% for hosta in groups['master'] %} {{ hostvars[hosta]['ansible_eth0']['ipv4']['address'] }}; {% endfor %} };
+        listen-on port 53 { 127.0.0.1; {% for hosta in groups['master'] %} {{ hostvars[hosta]['ansible_default_ipv4']['address'] }}; {% endfor %} };
         listen-on-v6 port 53 { ::1; };
         directory       "/var/named";
         dump-file       "/var/named/data/cache_dump.db";
         statistics-file "/var/named/data/named_stats.txt";
         memstatistics-file "/var/named/data/named_mem_stats.txt";
          allow-query     { any; };
-        allow-transfer     { localhost; {% for hosta in groups['slave'] %} {{ hostvars[hosta]['ansible_eth0']['ipv4']['address'] }}; {% endfor %} };
+        allow-transfer     { localhost; {% for hosta in groups['slave'] %} {{ hostvars[hosta]['ansible_default_ipv4']['address'] }}; {% endfor %} };
         recursion yes;
 
    		forwarders {
@@ -51,7 +51,7 @@ zone "{{ domain_name }}" IN {
 };
 
 {% 
-       set arpId = hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')
+       set arpId = hostvars[inventory_hostname]['ansible_default_ipv4']['address'].split('.')
 %}
 
 zone "{{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa" IN {

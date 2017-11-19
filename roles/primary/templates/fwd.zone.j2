@@ -14,14 +14,14 @@ $TTL 86400
 {% endfor %}
 
 ; Name server hostname to IP resolve.
-@       IN      A       {{hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']}}
+@       IN      A       {{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}
 
 {% for hosta in groups['slave'] %}
-@       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+@       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-@       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+@       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 ; Hosts in this Domain
@@ -29,13 +29,13 @@ $TTL 86400
 ;@       IN      A       192.168.0.220
 
 {% for hosta in groups['master'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['slave'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}       IN      A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}

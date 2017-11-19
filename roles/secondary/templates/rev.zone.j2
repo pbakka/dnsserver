@@ -1,7 +1,7 @@
 $TTL 86400
 
 {% 
-       set arpId = hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address'].split('.')
+       set arpId = hostvars[inventory_hostname]['ansible_default_ipv4']['address'].split('.')
 %}
 
 {{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa        IN SOA  {{host_name}}. root.{{domain_name}}. (
@@ -25,28 +25,28 @@ $ORIGIN {{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa
 ;rhel                  A       192.168.0.220
 
 {% for hosta in groups['master'] %}
-{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 {% for hosta in groups['slave'] %}
-{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_eth0']['ipv4']['address']}}
+{{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
 {% endfor %}
 
 {% for hosta in groups['master'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 
 {% for hosta in groups['slave'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 
 {% for hosta in groups['clients'] %}
-{% set ipSplit = hostvars[hosta]['ansible_eth0']['ipv4']['address'].split('.') %}
+{% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
 ;210             IN      PTR     node1.tecmintlocal.com.
