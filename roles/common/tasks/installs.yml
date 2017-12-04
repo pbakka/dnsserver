@@ -10,4 +10,5 @@
     - bind-libs
     - bind-utils
     - rpcbind
+    - libselinux-python
   when: add_client is undefined

@@ -1,16 +1,18 @@
 [master]
-192.168.2.7 host_name="ns.tipsoft.local"
+10.0.0.5 host_name="pdns.dlabs.com"
 [slave]
-192.168.2.8 host_name="ns-slave.tipsoft.local"
+10.0.0.6 host_name="sdns.dlabs.com"
 [all:vars]
 ansible_become=True
 ansible_become_user=root
-ansible_become_pass=XXXXX
-domain_name=tipsoft.local
-gateway_address=192.168.2.1
-allowed_ips=192.168.2.0/24
+ansible_become_pass=unroot1234
+domain_name=dlabs.com
+gateway_address=10.0.0.1
+allowed_ips=10.0.0.0/24
 forwarders="8.8.8.8"
 [clients]
-192.168.2.10 host_name="rhel1.tipsoft.local"
+10.0.0.7 host_name="tools.dlabs.com"
+10.0.0.101 host_name="kfk01.dlabs.com"
+10.0.0.102 host_name="kfk02.dlabs.com"
 [clients:vars]
 add_client=true

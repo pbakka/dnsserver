@@ -28,8 +28,6 @@ TTL 86400
 $ORIGIN {{domain_name}}.
 
 ; Hosts in this Domain
-;@       IN      A       192.168.0.210
-;@       IN      A       192.168.0.220
 
 {% for hosta in groups['master'] %}
 {{hostvars[hosta]['ansible_hostname']}}       A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}

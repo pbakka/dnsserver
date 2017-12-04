@@ -21,8 +21,6 @@ $TTL 86400
       PTR     {{domain_name}}.
 $ORIGIN {{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa 
 ;Hosts in Domain 
-;node1                 A       192.168.0.210
-;rhel                  A       192.168.0.220
 
 {% for hosta in groups['master'] %}
 {{hostvars[hosta]['ansible_hostname']}}             A       {{hostvars[hosta]['ansible_default_ipv4']['address']}}
@@ -49,5 +47,3 @@ $ORIGIN {{arpId[2]}}.{{arpId[1]}}.{{arpId[0]}}.in-addr.arpa
 {% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}                   PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
-;210             IN      PTR     node1.tecmintlocal.com.
-;220             IN      PTR     rhel1.tecmintlocal.com.

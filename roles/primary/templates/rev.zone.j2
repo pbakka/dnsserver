@@ -26,8 +26,6 @@ $TTL 86400
 {% endfor %}
 
 ;Hosts in Domain 
-;node1           IN      A       192.168.0.210
-;rhel            IN      A       192.168.0.220
 
 {% for hosta in groups['master'] %}
 {% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
@@ -43,5 +41,3 @@ $TTL 86400
 {% set ipSplit = hostvars[hosta]['ansible_default_ipv4']['address'].split('.') %}
 {{ ipSplit[3] }}             IN      PTR     {{hostvars[hosta]['host_name']}}.
 {% endfor %}
-;210             IN      PTR     node1.tecmintlocal.com.
-;220             IN      PTR     rhel1.tecmintlocal.com.
